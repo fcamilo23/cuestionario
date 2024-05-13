@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario Amigable</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<body>
+    <div class="container">
+        <form action="resultado.php" method="post" id="form">
+
+            <!--<div class="question">
+          <label for="q2">1. ¿Gabriel García Márquez escribió 'Cien años de soledad'?</label>
+          <div>
+              <input type="checkbox" style="display: inline-block" value="v">
+              <label style="display: inline-block">Verdadero</label>
+          </div>
+          <div>
+              <input type="checkbox" style="display: inline-block" value="f">
+              <label style="display: inline-block">Falso</label>
+          </div>
+        </div>
+            -->
+
+
+
+
+
+        </form>
+        <h3 id="res" style="display: none"></h3>
+        <button onclick="corregir();">Corregir</button>
+    </div>
+</body>
+</html>
+
+
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f7f7f7;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    input[type="checkbox"] {
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+
+
+<script>
+
+var preguntas = [
+        {
+            "pregunta": "La neuropsicología es una ciencia independiente y su objeto de conocimiento es la relación entre las estructuras cerebrales y los comportamientos.",
+            "respuesta": "V"
+        },
+        {
+            "pregunta": "La metodología interdisciplinaria de la neuropsicología la hace una ciencia sin autonomía pero con un objeto de estudio propio.",
+            "respuesta": "F"
+        },
+        {
+            "pregunta": "Gall con la frenología sostenía que la corteza cerebral funcionaba como un todo dándole gran relevancia al cerebro en relación con la conducta humana",
+            "respuesta": "F"
+        },
+        {
+            "pregunta": "Paul Broca describió un paciente con una lesión en el hemisferio izquierdo en áreas temporales, con problemas de articulación del lenguaje, marcando un hito en la historia de la Neuropsicología.",
+            "respuesta": "F"
+        },
+        {
+            "pregunta": "El modelo asociacionista o localizacionista plantea que las funciones corticales residen en zonas discretas del cerebro.",
+            "respuesta": "V"
+        },
+        {
+            "pregunta": "Luria planteaba la existencia de sistema funcionales complejos que implicaban áreas comunicadas de la corteza con centros de mayor especificidad. ",
+            "respuesta": "V"
+        },
+        {
+            "pregunta": "La corteza cerebral humana contiene 2 millones de neuronas.",
+            "respuesta": "F"
+        },
+        {
+            "pregunta": "La corteza se comunica por medio de impulsos excitatorios e inhibitorios eléctricos y bioquímicos.",
+            "respuesta": "V"
+        },
+        {
+            "pregunta": "Mesulan planteaba la existencia de 5 redes a gran escala una de ellas la red de la memoria y la emoción con epicentro en las cortezas temporales.",
+            "respuesta": "V"
+        },
+        {
+            "pregunta": "El cortex sensitivo unimodal responde a la estimulación de una única modalidad sensorial.",
+            "respuesta": "V"
+        },
+        {
+            "pregunta": "Las lesiones en el cortex primario produce agnosias",
+            "respuesta": "V"
+        }
+    ]
+
+
+
+
+    var array = [];
+    for (var i = 0; i < 10; i++) {
+        var num = randnum(array, preguntas.length - 1);
+        while (num === undefined) {
+            num = randnum(array, preguntas.length - 1);
+        }
+        array.push(num);
+    }
+
+    function randnum(arr, max) {
+        var num = Math.floor(Math.random() * (max - 0)) + 0;
+
+        if (typeof max === 'number' && !isNaN(max)) {
+            if (array.includes(num)) {
+                randnum(arr, max);
+            } else {
+                if (preguntas[num] !== undefined) {
+
+                    return num;
+                }
+                else {
+                    randnum(arr, max);
+
+                }
+            }
+        } else {
+            randnum(arr, max);
+        }
+    }
+
+
+    for (var x = 0; x < array.length; x++) {
+        var nuevoDiv = document.createElement("div");
+
+        nuevoDiv.className = "question"; 
+        nuevoDiv.id = "mi-id"; 
+        nuevoDiv.innerHTML = "";
+        nuevoDiv.style = "background: rgb(245,245,245); padding: 10px";
+
+        document.getElementById("form").appendChild(nuevoDiv); 
+
+        var label = document.createElement("label");
+        label.innerHTML = preguntas[x].pregunta;
+        nuevoDiv.appendChild(label);
+
+
+        var nuevoDiv1 = document.createElement("div");
+        var v = document.createElement("input");
+        v.type = "radio";
+        v.style = "display: inline-block";
+        v.value = "v";
+        v.id = array[x] + "v";
+        v.name = array[x];
+        //v.addEventListener('change', getvalue(v));
+
+        nuevoDiv1.appendChild(v);
+        //check(array[x]);
+        
+
+
+        var label1 = document.createElement("label");
+        label1.innerHTML = "Verdadero";
+        label1.style = "display: inline-block";
+        nuevoDiv1.appendChild(label1);
+
+        var saltoDeLinea = document.createElement("br");
+        nuevoDiv1.appendChild(saltoDeLinea);
+
+        
+        var f = document.createElement("input");
+        f.type = "radio";
+        f.style = "display: inline-block";
+        f.value = "f";
+        f.id = array[x] + "f";
+        f.name = array[x];
+        nuevoDiv1.appendChild(f);
+
+
+        var label2 = document.createElement("label");
+        label2.innerHTML = "Falso";
+        label2.style = "display: inline-block";
+        nuevoDiv1.appendChild(label2);
+
+
+        var correcto = document.createElement("label");
+        correcto.innerHTML = "Correcto!";
+        correcto.style = "display: inline-block; color: green; float: right";
+        correcto.style.display = "none";
+        correcto.id = array[x] + "correcto";;
+        nuevoDiv1.appendChild(correcto);
+
+        var incorrecto = document.createElement("label");
+        incorrecto.innerHTML = "Incorrecto!";
+        incorrecto.style = "display: inline-block; color: red; float: right";
+        incorrecto.id = array[x] + "incorrecto";;
+        incorrecto.style.display = "none";
+        nuevoDiv1.appendChild(incorrecto);
+      
+
+
+        nuevoDiv.appendChild(nuevoDiv1);
+
+        
+
+        
+        
+
+
+    }
+    function corregir() {
+        var respuestas = "";
+        var contadorrespuestas = 0;
+        for (var i = 0; i < (array.length); i++) {
+            
+            var strf = array[i] + "f";
+            var strv = array[i] + "v";
+
+            var v = document.getElementById(strv);
+            var f = document.getElementById(strf);
+            if (v.checked) {
+                if (preguntas[array[i]].respuesta == "V") {
+                    respuestas = respuestas + (i + 1) + ": Correcto! La respuesta es verdadero"+ "\n";
+                    document.getElementById(array[i] + "correcto").style.display = "block";
+                    contadorrespuestas++;
+                }
+                else if (preguntas[array[i]].respuesta == "F") {
+                    respuestas = respuestas + (i + 1) + ": Incorrecto, la respuesta es falso"+ "\n";
+                    document.getElementById(array[i] + "incorrecto").style.display = "block";
+                }
+            }
+
+            else if (f.checked) {
+                if (preguntas[array[i]].respuesta == "F") {
+                    respuestas = respuestas + (i + 1) + ": Correcto! La respuesta es falso"+ "\n";
+                    document.getElementById(array[i] + "correcto").style.display = "block";
+                    contadorrespuestas++;
+                }
+                else if (preguntas[array[i]].respuesta == "V") {
+                    respuestas = respuestas + (i + 1) + ": Incorrecto, la respuesta es verdadero"+ "\n";
+                    document.getElementById(array[i] + "incorrecto").style.display = "block";
+
+                }
+            }
+
+            else {
+                respuestas = "Hay preguntas sin responder, revise";
+                contadorrespuestas = -1;
+                break;
+            }
+           
+
+        }
+        if (contadorrespuestas != -1) {
+            respuestas = respuestas + "\n <br> \n Usted respondió " + contadorrespuestas + " respuestas correctas";
+            document.getElementById("res").style.display = "block";
+            document.getElementById("res").innerHTML = "Resultado: " + contadorrespuestas + "/" + array.length;
+
+            Swal.fire({
+            title: "Resultados: \n",
+            text: respuestas,
+            icon: "success",
+            html: '<pre>' + respuestas.replace(/\n/g, '<br>') + '</pre>',
+            });
+        }else{
+        Swal.fire({
+        title: respuestas,
+        icon: "error"
+        });
+    }
+    }
+
+  
+    /*for (var i = 0; i < array.length-1; i++) {
+        var v = document.getElementById(array[i] + "v");
+        var f = document.getElementById(array[i] + "f");
+        console.log(v); console.log(f);
+
+       
+
+    }*/
+</script>
+<!--<div class="question">
+  <label for="q2">1. ¿Gabriel García Márquez escribió 'Cien años de soledad'?</label>
+  <div>
+      <input type="checkbox" style="display: inline-block" value="v">
+      <label style="display: inline-block">Verdadero</label>
+  </div>
+  <div>
+      <input type="checkbox" style="display: inline-block" value="f">
+      <label style="display: inline-block">Falso</label>
+  </div>
+</div>
+    -->
